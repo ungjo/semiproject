@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>세미 프로젝트 게시판 - 목록</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/board-list.css}">
+</head>
+<body>
+
+<!-- fragments 사용 -layout.html의 nav를 이 자리에 삽입 -->
+<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+	
+<div class="container">
+
+    <!-- ===== 검색 폼 ===== -->
+	<!-- th:action, th:value : 검색어를 입력칸에 유지 -->
+    <form class="search-form" th:action="@{/board/list}" method="get">
+        <input type="text" name="keyword" placeholder="제목 또는 작성자 검색" th:value="${keyword}">
+        <button type="submit" class="btn btn-secondary">검색</button>
+        <!-- 검색 중일 때만 전체보기 버튼 표시 -->
+        <a th:if="${keyword != null and keyword != ''}"
+		th:href="@{/board/list}" class="btn">전체보기</a>
+    </form>
+
+    <!-- 검색 결과 안내 (검색 중일 때만 표시) -->
+    <p class="search-keyword" th:if="${keyword != null and keyword != ''}">
+	'<strong th:text="${keyword}"></strong>' 검색 결과
+	</p>	<!--controller에서 받아온 keyword가 null, 빈문자열이 아닐 때-->
+
+    <!-- ===== 게시글 목록 테이블 ===== -->
+    <table class="board-table">
+        <thead>
+            <tr>
+                <th style="width:70px">번호</th>
+                <th>제목</th>
+                <th style="width:100px">작성자</th>
+                <th style="width:120px">날짜</th>
+                <th style="width:70px">조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+			<!-- 게시글에 없을 때 -->
+			<tr th:if="${#lists.isEmpty(boardList)}">
+				<td colspan="5" class="no-data">등록된 게시글이 없습니다.</td>
+			</tr>
+			
+			<!--
+				th:each = "board : ${boardList}"
+				boardList의 각 항목이 board변수에 담겨 반복 출력
+			-->
+            <tr th:each="board : ${boardList}">
+                <td th:text="${board.boardId}"></td>
+                <td>
+					<a th:href="@{/board/detail/{id}(id=${board.boardId})}"
+					                  th:text="${board.boardTitle}"></a>
+				</td>
+                <td th:text="${board.memberLoginId}"></td>
+                <td th:text="${board.boardDate}"></td>
+                <td th:text="${board.boardHit}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- ===== 페이징 ===== -->
+	<!--
+		th:each="i : ${#numbers.sequence(1, totalPages)}" => 1 ~ totalPages 숫자 목록 생성
+	-->
+    <div class="pagination">
+        <a th:if = "${currentPage > 1}"
+		<a th:href="@{/board/list(page=${currentPage - 1}, keyword=${keyword})}">◀ 이전</a>	<!--요청 보낼 때 page=${currentPage - 1}을 보내줌. keyword라는 이름으로 keyword를 보내줌.-->
+		<a th:each="i : ${#numbers.sequence(1, totalPages)}"
+		th:href="@{/board/list(page=${i}, keyword=${keyword})}"
+		th:text="${i}"
+		th:class="${i == currentPage} ? 'active' : ''"></a>
+        <a th:if="${currentPage < totalPages}"
+		th:href="@{/board/list(page=${currentPage + 1})}">다음 ▶</a>
+    </div>
+
+</div>
+</body>
+</html>

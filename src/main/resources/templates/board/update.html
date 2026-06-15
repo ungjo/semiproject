@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+	<link rel="stylesheet" th:href="@{/css/common.css}">
+	   <link rel="stylesheet" th:href="@{/css/board-update.css}">
+</head>
+<body>
+
+	<!-- fragments 사용 -layout.html의 nav를 이 자리에 삽입 -->
+	<nav th:replace="~{fragments/layout :: nav}"></nav>
+
+<div class="container">
+    <h2>게시글 수정</h2>
+
+    <!--
+        action="/board/update/{boardId}" — POST /board/update/10 으로 폼 전송
+        기존 데이터가 input에 미리 채워진 상태로 시작됨
+    -->
+    <form class="write-form" th:action="@{/board/update/{id}(id=${board.boardId})}" method="post">
+
+        <div class="form-group">
+            <label for="boardTitle">제목</label>
+            <!--
+                value="..." — 기존 제목이 미리 채워짐
+                Thymeleaf: th:value="${board.boardTitle}"
+            -->
+            <input type="text"
+                   id="boardTitle"
+                   name="boardTitle"
+                   th:value="${board.boardTitle}"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label for="boardContent">내용</label>
+            <!--
+                기존 내용이 미리 채워짐
+                Thymeleaf: th:text="${board.boardContent}"
+                (textarea는 value 속성이 아닌 태그 안 텍스트로 값 설정)
+            -->
+            <textarea id="boardContent"
+                      name="boardContent" rows="14" th:text="${board.boardContent}"
+                      required></textarea>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">수정 완료</button>
+            <!--
+                취소 시 해당 게시글 상세보기로 돌아감
+                Thymeleaf: th:href="@{/board/detail/{id}(id=${board.boardId})}"
+            -->
+            <a th:href="@{/board/detail/{id}(id=${board.boardId})}" class="btn btn-secondary">취소</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
