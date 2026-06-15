@@ -35,6 +35,7 @@ public class BoardController {
 //           ex) /board/list -> page 1
    
    @GetMapping("/list")
+   // value="keyword" : html에서 name="keyword"로 되어있는 태그를 찾음
    public String list(Model model,
                   @RequestParam(value = "page", defaultValue = "1") int page,
                   @RequestParam(value = "keyword", defaultValue ="") String keyword) {

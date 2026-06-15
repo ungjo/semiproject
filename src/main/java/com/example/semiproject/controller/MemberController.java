@@ -57,6 +57,7 @@ public class MemberController {
 //   [로그인 처리]POST /member/login
 //   RequestParam("loginId") - 폼 input과 name속성값으로 파라미터를 받음
 //   login.html의 name="loginId"와 반드시 일치해야함
+//   화면에서 입력한 loginId와 pwd를 변수 loginId, pwd에 담는다. session은 로그인 상태를 기억해두기 위한 변수. model은 로그인 실패시 화면으로 데이터를 담아서 보낼 변수
    @PostMapping("/login")
    public String login(@RequestParam("loginId") String loginId, @RequestParam("pwd") String pwd, HttpSession session, Model model) {
 //	   DB에서 아이디, 비밀번호 일치여부 확인
