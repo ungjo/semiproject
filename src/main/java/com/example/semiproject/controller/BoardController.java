@@ -55,7 +55,7 @@ public class BoardController {
          totalPages = 1;
       }
       
-//      Model.addtribute("키", 값)
+//      Model.addAttribute("키", 값)
       model.addAttribute("boardList", boardList);
       model.addAttribute("currentPage", page);
       model.addAttribute("totalPages", totalPages);
@@ -85,6 +85,7 @@ public class BoardController {
       model.addAttribute("commentList", commentList);
       
 //      로그인 회원 정보 - 수정/삭제 버튼, 댓글 입력 폼 표시 여부
+//      MemberController.java에서 74번째 줄. loginMember라는 이름으로 회원정보를 저장해놓음
       MemberDTO loginMember = (MemberDTO) session.getAttribute("loginMember");
       if(loginMember != null) {
     	  model.addAttribute("loginMemberId", loginMember.getMemberId());
