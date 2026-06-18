@@ -35,7 +35,7 @@ public interface BoardMapper {
 //   [게시글 삭제] 게시글 번호에 해당하는 행 삭제
    void deleteBoard(@Param("boardId") int boardId);
    
-
+ 
 }
 
 
